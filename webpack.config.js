@@ -1,21 +1,24 @@
+const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const MiniCssExtractPlugin = require("mini-css-extract-plugin")
-const path = require('path')
+const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin')
 
 module.exports = {
   mode: 'development',
+  devtool: 'source-map',
   entry: './src/index.ts',
   output: {
     path: path.resolve(__dirname, 'dist'),
-    filename: 'index.[hash].js',
+    filename: 'index.js',
   },
   devServer: {
     static: {
-      directory: path.join(__dirname, 'dist')
+      directory: path.join(__dirname, 'dist'),
+      serveIndex: true,
     },
     port: 3000,
+    open: true,
   },
-  devtool: 'source-map',
   module: {
     rules: [
       {
@@ -32,7 +35,7 @@ module.exports = {
         ]
       },
       {
-        test: /\.m?ts$/,
+        test: /\.ts?$/,
         use: [
           {loader: 'babel-loader'},
           {loader: 'ts-loader'},
@@ -41,12 +44,17 @@ module.exports = {
       },
     ]
   },
+  resolve: {
+    extensions: ['.ts', '.js', '.json'] 
+    //指定されている拡張子のファイルはimportの際に拡張子を省略できる
+  },
   plugins: [
     new HtmlWebpackPlugin({
-      template: './base.html'
+      template: './src/base.html',
     }),
     new MiniCssExtractPlugin({
-      filename: 'index.[hash].css'
+      filename: 'index.css'
     }),
+    new ForkTsCheckerWebpackPlugin(),
   ],
 }

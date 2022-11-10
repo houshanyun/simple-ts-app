@@ -1,19 +1,19 @@
-const path = require('path')
-const HtmlWebpackPlugin = require('html-webpack-plugin')
-const MiniCssExtractPlugin = require("mini-css-extract-plugin")
-const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin')
+const path = require("path");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
 
 module.exports = {
-  mode: 'development',
-  devtool: 'source-map',
-  entry: './src/index.ts',
+  mode: "development",
+  devtool: "source-map",
+  entry: "./src/index.ts",
   output: {
-    path: path.resolve(__dirname, 'dist'),
-    filename: 'index.js',
+    path: path.resolve(__dirname, "dist"),
+    filename: "index.js",
   },
   devServer: {
     static: {
-      directory: path.join(__dirname, 'dist'),
+      directory: path.join(__dirname, "dist"),
       serveIndex: true,
     },
     port: 3000,
@@ -24,37 +24,34 @@ module.exports = {
       {
         test: /\.scss$/,
         use: [
-          {loader: MiniCssExtractPlugin.loader},
+          { loader: MiniCssExtractPlugin.loader },
           {
-            loader: 'css-loader',
+            loader: "css-loader",
             options: {
-              modules: false
-            }
+              modules: false,
+            },
           },
-          {loader: 'sass-loader'},
-        ]
+          { loader: "sass-loader" },
+        ],
       },
       {
         test: /\.ts?$/,
-        use: [
-          {loader: 'babel-loader'},
-          {loader: 'ts-loader'},
-        ],
-        exclude: /node_modules/
+        use: [{ loader: "babel-loader" }, { loader: "ts-loader" }],
+        exclude: /node_modules/,
       },
-    ]
+    ],
   },
   resolve: {
-    extensions: ['.ts', '.js', '.json'] 
+    extensions: [".ts", ".js", ".json"],
     //指定されている拡張子のファイルはimportの際に拡張子を省略できる
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: './src/base.html',
+      template: "./src/base.html",
     }),
     new MiniCssExtractPlugin({
-      filename: 'index.css'
+      filename: "index.css",
     }),
     new ForkTsCheckerWebpackPlugin(),
   ],
-}
+};

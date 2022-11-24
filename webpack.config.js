@@ -14,30 +14,38 @@ module.exports = {
   devServer: {
     static: {
       directory: path.join(__dirname, "dist"),
-      serveIndex: true,
     },
     port: 3000,
     open: true,
+    hot: false,
   },
   module: {
     rules: [
       {
         test: /\.scss$/,
         use: [
-          { loader: MiniCssExtractPlugin.loader },
+          MiniCssExtractPlugin.loader,
           {
             loader: "css-loader",
             options: {
               modules: false,
             },
           },
-          { loader: "sass-loader" },
+          "sass-loader",
         ],
       },
       {
         test: /\.ts?$/,
-        use: [{ loader: "babel-loader" }, { loader: "ts-loader" }],
         exclude: /node_modules/,
+        use: [
+          "babel-loader",
+          {
+            loader: "ts-loader",
+            options: {
+              configFile: path.resolve(__dirname, "tconfig.json"),
+            },
+          },
+        ],
       },
     ],
   },
